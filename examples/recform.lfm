@@ -1,10 +1,10 @@
 object RecordForm: TRecordForm
   Left = 305
-  Height = 362
+  Height = 384
   Top = 182
   Width = 387
   Caption = 'Record-based Database'
-  ClientHeight = 362
+  ClientHeight = 384
   ClientWidth = 387
   DesignTimePPI = 94
   OnCreate = FormCreate
@@ -123,13 +123,14 @@ object RecordForm: TRecordForm
     Top = 232
     Width = 73
     Caption = 'Save'
+    Enabled = False
     OnClick = AddBtnClick
     TabOrder = 3
   end
   object StatusBar: TStatusBar
     Left = 0
     Height = 20
-    Top = 342
+    Top = 364
     Width = 387
     Panels = <>
     SimpleText = 'Ready.'
@@ -140,6 +141,7 @@ object RecordForm: TRecordForm
     Top = 264
     Width = 73
     Caption = 'First'
+    Enabled = False
     OnClick = FirstBtnClick
     TabOrder = 5
   end
@@ -149,6 +151,7 @@ object RecordForm: TRecordForm
     Top = 232
     Width = 73
     Caption = 'New'
+    Enabled = False
     OnClick = NewBtnClick
     TabOrder = 6
   end
@@ -158,6 +161,7 @@ object RecordForm: TRecordForm
     Top = 264
     Width = 73
     Caption = 'Prev'
+    Enabled = False
     OnClick = PrevBtnClick
     TabOrder = 7
   end
@@ -167,7 +171,71 @@ object RecordForm: TRecordForm
     Top = 264
     Width = 73
     Caption = 'Next'
+    Enabled = False
     OnClick = NextBtnClick
     TabOrder = 8
+  end
+  object Label7: TLabel
+    Left = 9
+    Height = 18
+    Top = 296
+    Width = 169
+    Caption = 'Memory Card Server Host:'
+    Font.Style = [fsBold]
+    ParentColor = False
+    ParentFont = False
+  end
+  object HostName: TEdit
+    Left = 179
+    Height = 30
+    Top = 288
+    Width = 157
+    TabOrder = 9
+  end
+  object Label8: TLabel
+    Left = 9
+    Height = 18
+    Top = 328
+    Width = 32
+    Caption = 'Port:'
+    Font.Style = [fsBold]
+    ParentColor = False
+    ParentFont = False
+  end
+  object Port: TEdit
+    Left = 40
+    Height = 30
+    Top = 320
+    Width = 78
+    NumbersOnly = True
+    TabOrder = 10
+    Text = '3846'
+  end
+  object ConnectBtn: TButton
+    Left = 312
+    Height = 24
+    Top = 328
+    Width = 73
+    Caption = 'Connect...'
+    OnClick = ConnectBtnClick
+    TabOrder = 11
+  end
+  object Label9: TLabel
+    Left = 120
+    Height = 18
+    Top = 328
+    Width = 44
+    Caption = 'Token:'
+    Font.Style = [fsBold]
+    ParentColor = False
+    ParentFont = False
+  end
+  object AuthToken: TEdit
+    Left = 168
+    Height = 30
+    Top = 322
+    Width = 136
+    TabOrder = 12
+    Text = 'TestKey123'
   end
 end

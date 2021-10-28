@@ -14,6 +14,13 @@ type
 
   TRecordForm = class(TForm)
     AddBtn: TButton;
+    ConnectBtn: TButton;
+    AuthToken: TEdit;
+    Label9: TLabel;
+    Port: TEdit;
+    HostName: TEdit;
+    Label7: TLabel;
+    Label8: TLabel;
     NextBtn: TButton;
     PrevBtn: TButton;
     NewBtn: TButton;
@@ -31,6 +38,7 @@ type
     RecSize: TLabel;
     StatusBar: TStatusBar;
     procedure AddBtnClick(Sender: TObject);
+    procedure ConnectBtnClick(Sender: TObject);
     procedure FirstBtnClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -53,6 +61,7 @@ type
     procedure UpdateStatus;
     procedure HandleSync(card, blkid: integer);
     procedure SaveBlock;
+    procedure ConnectToServer;
   public
 
   end;
@@ -77,37 +86,7 @@ begin
   FDB:=TMemoryStream.Create;
   MemSize.Caption:=IntToStr(FDB.Size);
   FCurRec:=-1;
-  FCard:=TNetCard.Create('192.168.100.152', 3846);
-  FCard.Authenticate('TestKey123');
-  FCard.SelectCard(0);
   FBlock:=Nil;
-  New(FBlockInfo);
-  FBlockInfo^.typno:=0;
-  FBlockId:=FCard.FindApp(APP_ID, FBlockInfo);
-  if FBlockId = 0 then
-    FBlockId:=FCard.FindType(MYREC_TYP, FBlockInfo);
-  if FBlockId = 0 then
-    FBlockId:=FCard.FindFree
-  else
-  begin
-    FBlock:=FCard.ReadBlock(FBlockId);
-    FDB.LoadFromStream(FBlock);
-    FDB.SetSize(FBlockInfo^.total);
-    MemSize.Caption:=IntToStr(FDB.Size);
-    LoadRecord(0);
-  end;
-  if FBlockInfo^.typno <> MYREC_TYP then
-    with FBlockInfo^ do
-    begin
-      title:=APP_TITLE;
-      appno:=APP_ID;
-      typno:=MYREC_TYP;
-      total:=0;
-      nextid:=0;
-    end;
-  FCard.OnSync:=@HandleSync;
-  FCard.Subscribe(FBlockId);
-  Application.OnIdle:=@FCard.CheckEvents;
 end;
 
 procedure TRecordForm.AddBtnClick(Sender: TObject);
@@ -121,6 +100,35 @@ begin
   SaveBlock;
   if FCurRec = -1 then
     ClearForm;
+end;
+
+procedure TRecordForm.ConnectBtnClick(Sender: TObject);
+begin
+  try
+    ConnectToServer;
+  except
+    On EAuthError do
+    begin
+      ShowMessage('This application requires read access to work.');
+      FCard.Free;
+      Exit;
+    end;
+    On EAuthenticationFailed do
+    begin
+      ShowMessage('Authentication failed.');
+      FCard.Free;
+      Exit;
+    end;
+  end;
+  AddBtn.Enabled:=True;
+  NewBtn.Enabled:=True;
+  FirstBtn.Enabled:=True;
+  PrevBtn.Enabled:=True;
+  NextBtn.Enabled:=True;
+  ConnectBtn.Enabled:=False;
+  HostName.Enabled:=False;
+  Port.Enabled:=False;
+  AuthToken.Enabled:=False;
 end;
 
 procedure TRecordForm.FirstBtnClick(Sender: TObject);
@@ -227,7 +235,45 @@ begin
   FBlock.Position:=0;
   FDB.SaveToStream(FBlock);
   FBlockInfo^.total:=FDB.Size;
-  FCard.WriteBlock(FBlockId, FBlock, FBlockInfo);
+  try
+    FCard.WriteBlock(FBlockId, FBlock, FBlockInfo);
+  except
+    On EAuthError do StatusBar.SimpleText:='Failed to write data, access denied.';
+  end;
+end;
+
+procedure TRecordForm.ConnectToServer;
+begin
+  FCard:=TNetCard.Create(HostName.Text, StrToInt(port.Text));
+  FCard.Authenticate(AuthToken.Text);
+  FCard.SelectCard(0);
+  New(FBlockInfo);
+  FBlockInfo^.typno:=0;
+  FBlockId:=FCard.FindApp(APP_ID, FBlockInfo);
+  if FBlockId = 0 then
+    FBlockId:=FCard.FindType(MYREC_TYP, FBlockInfo);
+  if FBlockId = 0 then
+    FBlockId:=FCard.FindFree
+  else
+  begin
+    FBlock:=FCard.ReadBlock(FBlockId);
+    FDB.LoadFromStream(FBlock);
+    FDB.SetSize(FBlockInfo^.total);
+    MemSize.Caption:=IntToStr(FDB.Size);
+    LoadRecord(0);
+  end;
+  if FBlockInfo^.typno <> MYREC_TYP then
+    with FBlockInfo^ do
+    begin
+      title:=APP_TITLE;
+      appno:=APP_ID;
+      typno:=MYREC_TYP;
+      total:=0;
+      nextid:=0;
+    end;
+  FCard.OnSync:=@HandleSync;
+  FCard.Subscribe(FBlockId);
+  Application.OnIdle:=@FCard.CheckEvents;
 end;
 
 end.
