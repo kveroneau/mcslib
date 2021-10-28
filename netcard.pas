@@ -178,11 +178,11 @@ begin
   buf.data[2]:=128;
   Move(info^, buf.data[3], SizeOf(info^));
   FSock.Write(buf, SizeOf(buf));
-  blk.Position:=0;
-  FSock.CopyFrom(blk, FBlockSize);
   FSock.Read(buf, SizeOf(buf));
   if buf.op <> 200 then
     Raise EAuthError.Create('Access Denied.');
+  blk.Position:=0;
+  FSock.CopyFrom(blk, FBlockSize);
 end;
 
 procedure TNetCard.DeleteBlock(blkid: word);

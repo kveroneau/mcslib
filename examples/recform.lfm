@@ -1,0 +1,173 @@
+object RecordForm: TRecordForm
+  Left = 305
+  Height = 362
+  Top = 182
+  Width = 387
+  Caption = 'Record-based Database'
+  ClientHeight = 362
+  ClientWidth = 387
+  DesignTimePPI = 94
+  OnCreate = FormCreate
+  OnDestroy = FormDestroy
+  LCLVersion = '2.0.12.0'
+  object Label1: TLabel
+    Left = 56
+    Height = 18
+    Top = 14
+    Width = 260
+    Caption = 'Record-based Database test Application'
+    Font.Style = [fsBold]
+    ParentColor = False
+    ParentFont = False
+  end
+  object Label2: TLabel
+    Left = 22
+    Height = 18
+    Top = 51
+    Width = 96
+    Caption = 'Size Of Record:'
+    Font.Style = [fsBold]
+    ParentColor = False
+    ParentFont = False
+  end
+  object RecSize: TLabel
+    Left = 120
+    Height = 18
+    Top = 51
+    Width = 7
+    Caption = '0'
+    ParentColor = False
+  end
+  object Label3: TLabel
+    Left = 22
+    Height = 18
+    Top = 91
+    Width = 44
+    Caption = 'Name:'
+    Font.Style = [fsBold]
+    ParentColor = False
+    ParentFont = False
+  end
+  object EName: TEdit
+    Left = 80
+    Height = 30
+    Top = 88
+    Width = 256
+    TabOrder = 0
+  end
+  object Label4: TLabel
+    Left = 22
+    Height = 18
+    Top = 144
+    Width = 29
+    Caption = 'Age:'
+    Font.Style = [fsBold]
+    ParentColor = False
+    ParentFont = False
+  end
+  object EAge: TEdit
+    Left = 80
+    Height = 30
+    Top = 136
+    Width = 78
+    NumbersOnly = True
+    TabOrder = 1
+  end
+  object Label5: TLabel
+    Left = 22
+    Height = 18
+    Top = 192
+    Width = 52
+    Caption = 'Gender:'
+    Font.Style = [fsBold]
+    ParentColor = False
+    ParentFont = False
+  end
+  object EGender: TComboBox
+    Left = 80
+    Height = 30
+    Top = 184
+    Width = 98
+    ItemHeight = 0
+    ItemIndex = 0
+    Items.Strings = (
+      'Male'
+      'Female'
+      'Other'
+    )
+    Style = csDropDownList
+    TabOrder = 2
+    Text = 'Male'
+  end
+  object Label6: TLabel
+    Left = 152
+    Height = 18
+    Top = 51
+    Width = 150
+    Caption = 'Size of MemoryStream:'
+    Font.Style = [fsBold]
+    ParentColor = False
+    ParentFont = False
+  end
+  object MemSize: TLabel
+    Left = 304
+    Height = 18
+    Top = 51
+    Width = 7
+    Caption = '0'
+    ParentColor = False
+  end
+  object AddBtn: TButton
+    Left = 22
+    Height = 24
+    Top = 232
+    Width = 73
+    Caption = 'Save'
+    OnClick = AddBtnClick
+    TabOrder = 3
+  end
+  object StatusBar: TStatusBar
+    Left = 0
+    Height = 20
+    Top = 342
+    Width = 387
+    Panels = <>
+    SimpleText = 'Ready.'
+  end
+  object FirstBtn: TButton
+    Left = 22
+    Height = 24
+    Top = 264
+    Width = 73
+    Caption = 'First'
+    OnClick = FirstBtnClick
+    TabOrder = 5
+  end
+  object NewBtn: TButton
+    Left = 104
+    Height = 24
+    Top = 232
+    Width = 73
+    Caption = 'New'
+    OnClick = NewBtnClick
+    TabOrder = 6
+  end
+  object PrevBtn: TButton
+    Left = 104
+    Height = 24
+    Top = 264
+    Width = 73
+    Caption = 'Prev'
+    OnClick = PrevBtnClick
+    TabOrder = 7
+  end
+  object NextBtn: TButton
+    Left = 184
+    Height = 24
+    Top = 264
+    Width = 73
+    Caption = 'Next'
+    OnClick = NextBtnClick
+    TabOrder = 8
+  end
+end
