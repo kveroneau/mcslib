@@ -3,9 +3,9 @@ program demoapp;
 {$mode objfpc}{$H+}
 
 uses
-  {$IFDEF UNIX}
+  {$IFDEF UNIX}{$IFDEF USE_THREADS}
   cthreads,
-  {$ENDIF}
+  {$ENDIF}{$ENDIF}
   Interfaces, // this includes the LCL widgetset
   Forms, webform
   { you can add units after this };

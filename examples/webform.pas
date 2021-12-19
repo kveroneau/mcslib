@@ -11,14 +11,17 @@ uses
 type
 
   { TSyncThread }
-
+  {$IFDEF USE_THREADS}
   TSyncThread = class(TThread)
   private
     mc: TNetCard;
     blkid: integer;
     lock: TRTLCriticalSection;
     running: Boolean;
+    FAlertMsg: string;
     procedure PerformSync(card, bid: integer);
+    procedure AlertUser(const msg: string);
+    procedure ShowAlert;
   protected
     procedure Execute; override;
   public
@@ -26,8 +29,9 @@ type
     destructor Destroy; override;
     procedure Stop;
     procedure GetWebData(data: PWebData; content: TStrings);
+    procedure PutWebData(data: PWebData; content: string);
   end;
-
+  {$ENDIF}
   { TSyncForm }
 
   TSyncForm = class(TForm)
@@ -43,16 +47,18 @@ type
     procedure SaveBtnClick(Sender: TObject);
   private
     FWebData: PWebData;
+    {$IFNDEF USE_THREADS}
     mc: TNetCard;
     blkid: integer;
     procedure PerformSync(card, bid: integer);
+    {$ENDIF}
   public
-    procedure UpdateData;
+    {$IFDEF USE_THREADS}procedure UpdateData;{$ENDIF}
   end;
 
 var
   SyncForm: TSyncForm;
-  SyncThread: TSyncThread;
+  {$IFDEF USE_THREADS}SyncThread: TSyncThread;{$ENDIF}
 
 implementation
 
@@ -70,10 +76,12 @@ procedure TSyncForm.FormCreate(Sender: TObject);
 var
   info: TBlockInfo;
 begin
-  {SyncThread:=TSyncThread.Create;
-  SyncThread.Start;
-  UpdateData;}
   New(FWebData);
+  {$IFDEF USE_THREADS}
+  SyncThread:=TSyncThread.Create;
+  SyncThread.Start;
+  UpdateData;
+  {$ELSE}
   mc:=TNetCard.Create(MCS_HOST, MCS_PORT);
   mc.Authenticate(MCS_KEY);
   mc.SelectCard(MCS_CARD);
@@ -82,28 +90,36 @@ begin
   mc.Subscribe(blkid);
   PerformSync(MCS_CARD, blkid);
   Application.OnIdle:=@mc.CheckEvents;
+  {$ENDIF}
 end;
 
 procedure TSyncForm.FormDestroy(Sender: TObject);
 begin
-  {SyncThread.Stop;
+  {$IFDEF USE_THREADS}
+  SyncThread.Stop;
   repeat
     Sleep(10);
   until SyncThread.Finished;
-  SyncThread.Free;}
+  SyncThread.Free;
+  {$ELSE}
   mc.Free;
+  {$ENDIF}
   Dispose(FWebData);
 end;
 
 procedure TSyncForm.SaveBtnClick(Sender: TObject);
+{$IFNDEF USE_THREADS}
 var
-  blk: TMemoryStream;
+  blk: TMemoryStream;{$ENDIF}
 begin
-  blk:=TMemoryStream.Create;
-  blk.SetSize(mc.BlockSize);
   FWebData^.title:=PageTitle.Text;
   FWebData^.myflag:=MyFlag.Checked;
   FWebData^.visits:=StrToInt(SiteVisits.Text);
+  {$IFDEF USE_THREADS}
+  SyncThread.PutWebData(FWebData, SiteContent.Text);
+  {$ELSE}
+  blk:=TMemoryStream.Create;
+  blk.SetSize(mc.BlockSize);
   blk.Write(FWebData^, SizeOf(FWebData^));
   blk.WriteAnsiString(SiteContent.Text);
   try
@@ -112,8 +128,10 @@ begin
     On EAuthError do ShowMessage('Access Denied, no write access.');
   end;
   blk.Free;
+  {$ENDIF}
 end;
 
+{$IFNDEF USE_THREADS}
 procedure TSyncForm.PerformSync(card, bid: integer);
 var
   blk: TMemoryStream;
@@ -129,11 +147,14 @@ begin
     blk.Free;
   end;
 end;
-
+{$ELSE}
 procedure TSyncForm.UpdateData;
 begin
   try
     SyncThread.GetWebData(FWebData, SiteContent.Lines);
+    PageTitle.Text:=FWebData^.title;
+    MyFlag.Checked:=FWebData^.myflag;
+    SiteVisits.Text:=IntToStr(FWebData^.visits);
   except
     On EAuthError do ShowMessage('Access Denied!');
   end;
@@ -144,6 +165,17 @@ end;
 procedure TSyncThread.PerformSync(card, bid: integer);
 begin
   Synchronize(@SyncForm.UpdateData);
+end;
+
+procedure TSyncThread.AlertUser(const msg: string);
+begin
+  FAlertMsg:=msg;
+  Synchronize(@ShowAlert);
+end;
+
+procedure TSyncThread.ShowAlert;
+begin
+  ShowMessage(FAlertMsg);
 end;
 
 procedure TSyncThread.Execute;
@@ -203,6 +235,29 @@ begin
     LeaveCriticalSection(lock);
   end;
 end;
+
+procedure TSyncThread.PutWebData(data: PWebData; content: string);
+var
+  blk: TMemoryStream;
+begin
+  EnterCriticalSection(lock);
+  try
+    blk:=TMemoryStream.Create;
+    blk.SetSize(mc.BlockSize);
+    blk.Write(data^, SizeOf(data^));
+    blk.WriteAnsiString(content);
+    try
+      mc.WriteBlock(blkid, blk);
+    except
+      On EAuthError do AlertUser('Access Denied, no write access.');
+    end;
+    blk.Free;
+  finally
+    LeaveCriticalSection(lock);
+  end;
+end;
+
+{$ENDIF}
 
 end.
 
