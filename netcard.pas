@@ -66,6 +66,7 @@ type
     procedure AddAuth(const key: string; read, write: boolean);
     procedure CheckEvents(Sender: TObject; var Done: Boolean);
     Property OnSync: TSyncEvent read FOnSync write FOnSync;
+    Property BlockSize: integer read FBlockSize;
   end;
 
 implementation
