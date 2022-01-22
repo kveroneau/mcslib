@@ -1,0 +1,67 @@
+object NotepadForm: TNotepadForm
+  Left = 298
+  Height = 235
+  Top = 185
+  Width = 313
+  Caption = 'Network Notepad'
+  ClientHeight = 207
+  ClientWidth = 313
+  DesignTimePPI = 94
+  Menu = MainMenu
+  OnCreate = FormCreate
+  OnDestroy = FormDestroy
+  OnResize = FormResize
+  LCLVersion = '2.0.12.0'
+  object MemoPad: TMemo
+    Left = 0
+    Height = 88
+    Top = 0
+    Width = 147
+    TabOrder = 0
+  end
+  object MainMenu: TMainMenu
+    Left = 24
+    Top = 160
+    object FileMenu: TMenuItem
+      Caption = 'File'
+      object NewMenu: TMenuItem
+        Caption = 'New'
+        OnClick = NewMenuClick
+      end
+      object OpenMenu: TMenuItem
+        Caption = 'Open...'
+        ShortCut = 114
+        OnClick = OpenMenuClick
+      end
+      object SaveMenu: TMenuItem
+        Caption = 'Save'
+        ShortCut = 113
+        OnClick = SaveMenuClick
+      end
+      object SaveAsMenu: TMenuItem
+        Caption = 'Save As...'
+        OnClick = SaveAsMenuClick
+      end
+      object CloseConnMenu: TMenuItem
+        Caption = 'Close Connection'
+        Enabled = False
+        OnClick = CloseConnMenuClick
+      end
+      object MenuItem1: TMenuItem
+        Caption = '-'
+      end
+      object ExitMenu: TMenuItem
+        Caption = 'Exit'
+        OnClick = ExitMenuClick
+      end
+    end
+    object EditMenu: TMenuItem
+      Caption = 'Edit'
+    end
+  end
+  object Timer: TTimer
+    OnTimer = TimerTimer
+    Left = 264
+    Top = 8
+  end
+end

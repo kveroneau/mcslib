@@ -1,0 +1,189 @@
+object NetFiler: TNetFiler
+  Left = 379
+  Height = 302
+  Top = 235
+  Width = 298
+  BorderStyle = bsDialog
+  Caption = 'Net Filer'
+  ClientHeight = 302
+  ClientWidth = 298
+  DesignTimePPI = 94
+  OnCreate = FormCreate
+  LCLVersion = '2.0.12.0'
+  object Label1: TLabel
+    Left = 8
+    Height = 18
+    Top = 8
+    Width = 79
+    Caption = 'Card Server:'
+    Font.Style = [fsBold]
+    ParentColor = False
+    ParentFont = False
+  end
+  object Label2: TLabel
+    Left = 216
+    Height = 18
+    Top = 8
+    Width = 32
+    Caption = 'Port:'
+    Font.Style = [fsBold]
+    ParentColor = False
+    ParentFont = False
+  end
+  object Label3: TLabel
+    Left = 8
+    Height = 18
+    Top = 40
+    Width = 80
+    Caption = 'Auth Token:'
+    Font.Style = [fsBold]
+    ParentColor = False
+    ParentFont = False
+  end
+  object ServerHost: TEdit
+    Left = 88
+    Height = 30
+    Top = 0
+    Width = 128
+    TabOrder = 0
+  end
+  object ServerPort: TEdit
+    Left = 248
+    Height = 30
+    Top = 0
+    Width = 37
+    NumbersOnly = True
+    TabOrder = 1
+  end
+  object AuthToken: TEdit
+    Left = 88
+    Height = 30
+    Top = 32
+    Width = 197
+    EchoMode = emPassword
+    MaxLength = 20
+    PasswordChar = '*'
+    TabOrder = 2
+  end
+  object Label4: TLabel
+    Left = 8
+    Height = 18
+    Top = 68
+    Width = 92
+    Caption = 'Card Number:'
+    Font.Style = [fsBold]
+    ParentColor = False
+    ParentFont = False
+  end
+  object CardNumber: TEdit
+    Left = 104
+    Height = 30
+    Top = 64
+    Width = 112
+    NumbersOnly = True
+    TabOrder = 3
+  end
+  object ListBtn: TButton
+    Left = 216
+    Height = 30
+    Top = 64
+    Width = 69
+    Caption = 'Connect'
+    OnClick = ListBtnClick
+    TabOrder = 4
+  end
+  object FileList: TListView
+    Left = 3
+    Height = 171
+    Top = 96
+    Width = 282
+    Columns = <    
+      item
+        AutoSize = True
+        Caption = 'Title'
+        MaxWidth = 50
+        MinWidth = 120
+        Width = 120
+      end    
+      item
+        AutoSize = True
+        Caption = 'App'
+        Width = 36
+      end    
+      item
+        AutoSize = True
+        Caption = 'Type'
+        Width = 41
+      end    
+      item
+        AutoSize = True
+        Caption = 'Size'
+        Width = 83
+      end>
+    ReadOnly = True
+    ScrollBars = ssAutoVertical
+    SmallImages = ImageList
+    SmallImagesWidth = 16
+    TabOrder = 5
+    ViewStyle = vsReport
+    OnClick = FileListClick
+  end
+  object CancelBtn: TButton
+    Left = 112
+    Height = 24
+    Top = 272
+    Width = 73
+    Caption = 'Cancel'
+    ModalResult = 2
+    TabOrder = 6
+  end
+  object OkayBtn: TButton
+    Left = 208
+    Height = 24
+    Top = 272
+    Width = 73
+    Caption = 'Okay'
+    Enabled = False
+    ModalResult = 1
+    TabOrder = 7
+  end
+  object ImageList: TImageList
+    Left = 16
+    Top = 272
+    Bitmap = {
+      4C69010000001000000010000000000000001313130C000000390000003D0000
+      003D0000003D0000003D0000003D0000003D0000003D0000003D0000003D0000
+      003D000000390707070F00000000000000000000003DFFFFFFFFFFFFFFFFFFFF
+      FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+      FFFFFFFFFFFF0000004A000000000000000000000040FFFFFFFF89898AFFF1F1
+      F2FFDBDBDDFFCFCFD0FFCCCCCDFFCACACCFFCECED1FFC7C7C8FFCACACCFFDADA
+      DBFFEFEFF0FF0000004D000000000000000000000040FFFFFFFFF7F7F8FFEDED
+      EFFFF0F0F2FFF1F1F3FFF1F1F3FFF3F3F4FFEFEFF1FFF5F5F6FFF3F3F4FFF3F3
+      F4FFFFFFFFFF0000004D000000000000000000000040FFFFFFFF8B8B8DFFDBDB
+      DBFFCECECFFFC8C8C9FFD1D1D2FFC9C9CAFFCDCDCDFFCACACAFFD8D8D9FFCACA
+      CBFFEFEFEEFF0000004D000000000000000000000040FFFFFFFFFBFBFCFFF5F5
+      F6FFF5F5F6FFF9F9FAFFF9F9FAFFFAFAFBFFFBFBFBFFF9F9FAFFF8F8F9FFF9F9
+      F9FFFFFFFFFF0000004D000000000000000000000040FFFFFFFF8F8F90FFDADA
+      DBFFCFCFCFFFCCCCCCFFD1D1D2FFD1D1D0FFCECECEFFD1D1D1FFE2E2E2FFD3D3
+      D3FFF6F6F6FF0000004D000000000000000000000040FFFFFFFFFFFFFFFFFAFA
+      FAFFFCFCFCFFFFFFFFFFFEFEFEFFFDFDFDFFFAFAFAFFFBFBFBFFF7F7F7FFF6F6
+      F6FFFFFFFFFF0000004D000000000000000000000040FFFFFFFF919191FFE5E5
+      E5FFD1D1D1FFD0D0D0FFDBDBDBFFDFDFE0FFDEDEDEFFCACACAFFD6D6D6FFC7C7
+      C8FFE9E9E9FF0000004D000000000000000000000040FFFFFFFFFFFFFFFFFCFC
+      FDFFFEFEFEFFFEFEFEFFFCFCFDFFEAEAEAFFB1B1B1FFAFAFB0FFADADADFFB5B5
+      B5FEEAEAEAFF00000034000000000000000000000040FFFFFFFF929292FFE4E4
+      E5FFE0E0E1FFDDDDDDFFCECECEFF858585FFFFFFFFFFFFFFFFFFFFFFFFFEF3F3
+      F4FF2E2E30782B2B2B02000000000000000000000040FFFFFFFFFFFFFFFFFDFD
+      FEFFFDFDFDFFFBFBFBFFF4F4F4FFA0A0A0FFFFFFFFFFEEEEEEFED7D7D9FF2A2A
+      2A801E1E1E0300000000000000000000000000000040FFFFFFFF929292FFE5E5
+      E5FFCFCFCFFFDADADAFFD8D8D8FF878787FFFFFFFFFEDCDCDEFF292929871414
+      15040000000000000000000000000000000000000040FFFFFFFFFFFFFFFFFAFA
+      FAFFFBFBFCFFF7F7F7FFECECECFFC7C7C7FEF7F7F6FF2626258E111111060000
+      0000000000000000000000000000000000000000003EFFFFFFFFDDDDDDFFFFFF
+      FFFFFCFCFCFFF8F8F8FFEFEFEFFFDCDCDCFF2424248F0E0E0E07000000000000
+      0000000000000000000000000000000000001010100D0000003D0000003F0000
+      003F0000003F0000003F0000003F000000321010100500000000000000000000
+      0000000000000000000000000000
+    }
+  end
+end
