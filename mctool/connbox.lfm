@@ -1,0 +1,106 @@
+object ConnectForm: TConnectForm
+  Left = 404
+  Height = 100
+  Top = 285
+  Width = 313
+  BorderStyle = bsDialog
+  Caption = 'Connect to Server...'
+  ClientHeight = 100
+  ClientWidth = 313
+  DesignTimePPI = 94
+  LCLVersion = '2.0.12.0'
+  object Label1: TLabel
+    Left = 8
+    Height = 18
+    Top = 8
+    Width = 72
+    Caption = 'Hostname:'
+    Font.Style = [fsBold]
+    ParentColor = False
+    ParentFont = False
+  end
+  object HostName: TEdit
+    Left = 80
+    Height = 30
+    Top = 0
+    Width = 224
+    TabOrder = 0
+  end
+  object Label2: TLabel
+    Left = 8
+    Height = 18
+    Top = 40
+    Width = 32
+    Caption = 'Port:'
+    Font.Style = [fsBold]
+    ParentColor = False
+    ParentFont = False
+  end
+  object HostPort: TEdit
+    Left = 48
+    Height = 30
+    Top = 32
+    Width = 38
+    NumbersOnly = True
+    TabOrder = 1
+    Text = '3845'
+  end
+  object Label3: TLabel
+    Left = 96
+    Height = 18
+    Top = 40
+    Width = 37
+    Caption = 'Auth:'
+    Font.Style = [fsBold]
+    ParentColor = False
+    ParentFont = False
+  end
+  object AuthToken: TEdit
+    Left = 136
+    Height = 30
+    Top = 32
+    Width = 166
+    EchoMode = emPassword
+    MaxLength = 20
+    PasswordChar = '*'
+    TabOrder = 2
+  end
+  object Label4: TLabel
+    Left = 8
+    Height = 18
+    Top = 72
+    Width = 92
+    Caption = 'Card Number:'
+    Font.Style = [fsBold]
+    ParentColor = False
+    ParentFont = False
+  end
+  object CardNumber: TEdit
+    Left = 104
+    Height = 30
+    Top = 64
+    Width = 78
+    NumbersOnly = True
+    TabOrder = 3
+    Text = '0'
+  end
+  object OkayBtn: TButton
+    Left = 184
+    Height = 24
+    Top = 72
+    Width = 48
+    Caption = 'Go >'
+    Default = True
+    OnClick = OkayBtnClick
+    TabOrder = 4
+  end
+  object CloseBtn: TButton
+    Left = 232
+    Height = 24
+    Top = 72
+    Width = 73
+    Caption = 'Cancel'
+    ModalResult = 2
+    TabOrder = 5
+  end
+end
