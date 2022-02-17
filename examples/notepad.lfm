@@ -17,11 +17,21 @@ object NotepadForm: TNotepadForm
     Height = 88
     Top = 0
     Width = 147
+    OnChange = MemoPadChange
+    ScrollBars = ssAutoBoth
     TabOrder = 0
+  end
+  object StatusBar: TStatusBar
+    Left = 0
+    Height = 20
+    Top = 187
+    Width = 313
+    Panels = <>
+    SimpleText = 'Ready.'
   end
   object MainMenu: TMainMenu
     Left = 24
-    Top = 160
+    Top = 136
     object FileMenu: TMenuItem
       Caption = 'File'
       object NewMenu: TMenuItem

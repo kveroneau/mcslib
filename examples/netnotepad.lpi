@@ -115,12 +115,14 @@
         <Filename Value="notepad.pas"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="NotepadForm"/>
+        <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
       </Unit1>
       <Unit2>
         <Filename Value="netfile.pas"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="NetFiler"/>
+        <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
       </Unit2>
       <Unit3>

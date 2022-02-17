@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, Menus, StdCtrls,
-  ExtCtrls, netfile, netcard;
+  ExtCtrls, ComCtrls, netfile, netcard;
 
 type
 
@@ -24,12 +24,14 @@ type
     SaveMenu: TMenuItem;
     SaveAsMenu: TMenuItem;
     ExitMenu: TMenuItem;
+    StatusBar: TStatusBar;
     Timer: TTimer;
     procedure CloseConnMenuClick(Sender: TObject);
     procedure ExitMenuClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure FormResize(Sender: TObject);
+    procedure MemoPadChange(Sender: TObject);
     procedure NewMenuClick(Sender: TObject);
     procedure OpenMenuClick(Sender: TObject);
     procedure SaveAsMenuClick(Sender: TObject);
@@ -40,6 +42,7 @@ type
     FBlock: TMemoryStream;
     procedure SaveBlock(const Title: string);
     procedure ProcessSync(cid, blkid: integer);
+    procedure UpdateSize;
   public
 
   end;
@@ -56,7 +59,12 @@ implementation
 procedure TNotepadForm.FormResize(Sender: TObject);
 begin
   MemoPad.Width:=ClientWidth;
-  MemoPad.Height:=ClientHeight;
+  MemoPad.Height:=ClientHeight-StatusBar.Height;
+end;
+
+procedure TNotepadForm.MemoPadChange(Sender: TObject);
+begin
+  UpdateSize;
 end;
 
 procedure TNotepadForm.NewMenuClick(Sender: TObject);
@@ -151,6 +159,8 @@ begin
     info.total:=Length(MemoPad.Text);
     info.nextid:=0;
     Card.WriteBlock(FBlockID, FBlock, @info);
+    Card.OnSync:=@ProcessSync;
+    Card.Subscribe(FBlockID);
   end
   else
     Card.WriteBlock(FBlockID, FBlock);
@@ -163,6 +173,12 @@ begin
   FBlock:=Card.ReadBlock(blkid);
   MemoPad.Text:=FBlock.ReadAnsiString;
   FBlockID:=blkid;
+end;
+
+procedure TNotepadForm.UpdateSize;
+begin
+  if Assigned(Card) then
+    StatusBar.SimpleText:='Characters: '+IntToStr(Memopad.GetTextLen)+'/'+IntToStr(Card.BlockSize);
 end;
 
 procedure TNotepadForm.FormCreate(Sender: TObject);
