@@ -84,9 +84,10 @@ begin
     if Assigned(Card) then
     begin
       f.ListBtn.Enabled:=False;
+      f.OkayBtn.Enabled:=True;
       f.GetList;
     end;
-    if f.ShowModal = mrCancel then
+    if f.ShowModal <> mrOK then
       Exit;
     CloseConnMenu.Enabled:=True;
     MemoPad.Clear;
@@ -113,9 +114,10 @@ begin
     if Assigned(Card) then
     begin
       f.ListBtn.Enabled:=False;
+      f.OkayBtn.Enabled:=True;
       f.GetList;
     end;
-    if f.ShowModal = mrCancel then
+    if f.ShowModal <> mrOK then
       Exit;
     CloseConnMenu.Enabled:=True;
     FBlockID:=f.BlockID;
@@ -159,6 +161,7 @@ begin
     info.total:=Length(MemoPad.Text);
     info.nextid:=0;
     Card.WriteBlock(FBlockID, FBlock, @info);
+    Caption:=info.title+' : Network Notepad';
     Card.OnSync:=@ProcessSync;
     Card.Subscribe(FBlockID);
   end

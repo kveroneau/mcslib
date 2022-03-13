@@ -27,6 +27,7 @@ type
     Label2: TLabel;
     Label3: TLabel;
     procedure FileListClick(Sender: TObject);
+    procedure FileListDblClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure ListBtnClick(Sender: TObject);
   private
@@ -78,6 +79,12 @@ end;
 procedure TNetFiler.FileListClick(Sender: TObject);
 begin
   FBlockID:=FileList.ItemIndex+1;
+end;
+
+procedure TNetFiler.FileListDblClick(Sender: TObject);
+begin
+  FBlockID:=FileList.ItemIndex+1;
+  OkayBtn.Click;
 end;
 
 procedure TNetFiler.FormCreate(Sender: TObject);

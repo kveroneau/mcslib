@@ -54,6 +54,7 @@ object NetFiler: TNetFiler
     Width = 37
     NumbersOnly = True
     TabOrder = 1
+    Text = '3845'
   end
   object AuthToken: TEdit
     Left = 88
@@ -127,6 +128,7 @@ object NetFiler: TNetFiler
     TabOrder = 5
     ViewStyle = vsReport
     OnClick = FileListClick
+    OnDblClick = FileListDblClick
   end
   object CancelBtn: TButton
     Left = 112
